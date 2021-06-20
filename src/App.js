@@ -19,6 +19,7 @@ class App extends Component {
             accounts : [...this.state.accounts,acc]
         })
     }
+
     deleteAccount = (id) =>{
         //kopira sve iz accounts u accountsCopy
         const accountsCopy = [...this.state.accounts];
@@ -27,6 +28,16 @@ class App extends Component {
         //state.accounts menja sa newCopyAccounts
         this.setState({accounts:newCopyAccounts})
     }
+
+    editAccount = (acc) =>{
+        //copyAccounts.map(accounts => accounts.id) - stavlja id po redu u array dok indexOf(acc.id) ako je acc.id 1 tada on utvrdjuje na kojem je mestu 0 ili nekoj drugoj poziciji
+        const copyAccounts = [...this.state.accounts];
+        let accountPossition = copyAccounts.map(accounts => accounts.id).indexOf(acc.id);
+        copyAccounts[accountPossition] = acc;
+        this.setState({accounts:copyAccounts});
+        
+    }
+
     //Switch povezano sa Account.js, kada je edit/1 tada ulazi samo u prvi a ne ulazi u drugi slicno radi kao prekidac
     render(){
         return(
@@ -40,7 +51,7 @@ class App extends Component {
                 </Route>
                 <Switch>
                     <Route path="/edit/:id">
-                        <EditAccount accounts={this.state.accounts}/>
+                        <EditAccount accounts={this.state.accounts} editAccount={this.editAccount}/>
                     </Route>
                     <Route path="/edit">
                         <EditTable deleteAccount={this.deleteAccount} accounts={this.state.accounts}/>
